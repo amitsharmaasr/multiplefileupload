@@ -1,5 +1,10 @@
 <div class="container">
 
+@if(Session::has('message'))
+<div class="row">
+    <p>{{ Session::get('message') }}</p>
+</div>
+@endif
     <div class="row">
         <a href="upload">Upload Images</a>
     </div>

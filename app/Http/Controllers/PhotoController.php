@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Photo;
+use Session;
 
 class PhotoController extends Controller
 {
@@ -20,22 +21,23 @@ class PhotoController extends Controller
                 'filename' => $filename
             ]);
         }
-	$photo = Photo::all();
-        return view('view_form', compact('photo'));
-        //return 'Upload successful!';
+        Session::flash('message', 'Image Uploaded Successfully'); 
+        return redirect('gallery');
+
     }
 
     public function deletePhoto(Request $request){
 	$photos = Photo::find($request->id);
 	if($photos->delete()){
-		        $photo = Photo::all();
-		        return view('view_form', compact('photo'));
-
-	}
+                Session::flash('message', 'Image Deleted Successfully'); 
+	}else{
+                Session::flash('message', 'Image Deleted Unsuccessfully'); 
+    }
+    return redirect('gallery');
     }   
 
     public function view(){
-	$photo = Photo::all();
-	return view('view_form', compact('photo'));
+	    $photo = Photo::all();
+	    return view('view_form', compact('photo'));
     } 
 }
