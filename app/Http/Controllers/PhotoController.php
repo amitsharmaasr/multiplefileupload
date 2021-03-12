@@ -15,11 +15,14 @@ class PhotoController extends Controller
 
     public function uploadSubmit(Request $request)
     {
+        $allowedType = ['image/png', 'image/jpg', 'image/jpeg'];
         foreach ($request->photos as $photo) {
-            $filename = $photo->store('photos');
-            Photo::create([
-                'filename' => $filename
-            ]);
+            if(in_array($photo->getMimeType(), $allowedType)){  
+                $filename = $photo->store('photos');
+                Photo::create([
+                    'filename' => $filename
+                ]);
+            }
         }
         Session::flash('message', 'Image Uploaded Successfully'); 
         return redirect('gallery');
@@ -37,7 +40,7 @@ class PhotoController extends Controller
     }   
 
     public function view(){
-	    $photo = Photo::all();
+        $photo = Photo::all();
 	    return view('view_form', compact('photo'));
     } 
 }
